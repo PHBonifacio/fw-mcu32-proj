@@ -155,51 +155,51 @@
 // J4.35 nothing                         {TM4C123 PC6, MSP432 P6.7}
 
 //color constants                  red  grn  blu
-#define LCD_BLACK      0x0000   //   0,   0,   0
-#define LCD_BLUE       0x001F   //   0,   0, 255
-#define LCD_DARKBLUE   0x34BF   //  50, 150, 255
-#define LCD_RED        0xF800   // 255,   0,   0
-#define LCD_GREEN      0x07E0   //   0, 255,   0
-#define LCD_LIGHTGREEN 0x07EF   //   0, 255, 120
-#define LCD_ORANGE     0xFD60   // 255, 175,   0
-#define LCD_CYAN       0x07FF   //   0, 255, 255
-#define LCD_MAGENTA    0xF81F   // 255,   0, 255
-#define LCD_YELLOW     0xFFE0   // 255, 255,   0
-#define LCD_WHITE      0xFFFF   // 255, 255, 255
-#define LCD_GREY       0x8410   // 128, 128, 128
+#define LCD_BLACK           0x0000   //   0,   0,   0
+#define LCD_BLUE            0x001F   //   0,   0, 255
+#define LCD_DARKBLUE        0x34BF   //  50, 150, 255
+#define LCD_RED             0xF800   // 255,   0,   0
+#define LCD_GREEN           0x07E0   //   0, 255,   0
+#define LCD_LIGHTGREEN      0x07EF   //   0, 255, 120
+#define LCD_ORANGE          0xFD60   // 255, 175,   0
+#define LCD_CYAN            0x07FF   //   0, 255, 255
+#define LCD_MAGENTA         0xF81F   // 255,   0, 255
+#define LCD_YELLOW          0xFFE0   // 255, 255,   0
+#define LCD_WHITE           0xFFFF   // 255, 255, 255
+#define LCD_GREY            0x8410   // 128, 128, 128
 //Poloni (12/02/2019) - outras cores para imagem cor de 4 bits (16 cores)
-#define LCD_Black			 		0x0000
-#define LCD_Dark_Blue			0x0010
-#define LCD_Green					0x0400
-#define LCD_Teal					0x0410
-#define LCD_Dark_Red			0x8000
-#define LCD_Violet				0x8010
+#define LCD_Black			0x0000
+#define LCD_Dark_Blue       0x0010
+#define LCD_Green           0x0400
+#define LCD_Teal            0x0410
+#define LCD_Dark_Red        0x8000
+#define LCD_Violet          0x8010
 #define LCD_Dark_Yellow		0x8400
-#define LCD_Gray50				0x8410
-#define LCD_Gray25				0xC618
-#define LCD_Blue					0x001F
+#define LCD_Gray50          0x8410
+#define LCD_Gray25          0xC618
+#define LCD_Blue            0x001F
 #define LCD_Bright_Green	0x07E0
-#define LCD_Turquoise			0x07FF
-#define LCD_Red						0xF800
-#define LCD_Pink					0xF81F
-#define LCD_Yellow				0xFFE0
-#define LCD_White					0xFFFF
-#define LCD4_Black			 	1
+#define LCD_Turquoise       0x07FF
+#define LCD_Red             0xF800
+#define LCD_Pink            0xF81F
+#define LCD_Yellow          0xFFE0
+#define LCD_White           0xFFFF
+#define LCD4_Black          1
 #define LCD4_Dark_Blue		2
-#define LCD4_Green				3
-#define LCD4_Teal					4
-#define LCD4_Dark_Red			5
-#define LCD4_Violet				6
+#define LCD4_Green          3
+#define LCD4_Teal           4
+#define LCD4_Dark_Red       5
+#define LCD4_Violet         6
 #define LCD4_Dark_Yellow	7
-#define LCD4_Gray50				8
-#define LCD4_Gray25				9
-#define LCD4_Blue					10
+#define LCD4_Gray50         8
+#define LCD4_Gray25         9
+#define LCD4_Blue           10
 #define LCD4_Bright_Green	11
 #define LCD4_Turquoise		12
-#define LCD4_Red					13
-#define LCD4_Pink					14
-#define LCD4_Yellow				15
-#define LCD4_White				16
+#define LCD4_Red            13
+#define LCD4_Pink           14
+#define LCD4_Yellow         15
+#define LCD4_White          16
 
 
 // ------------BSP_Button1_Init------------
@@ -523,7 +523,7 @@ void BSP_LCD_DrawChar(int16_t x, int16_t y, char c, int16_t textColor, int16_t b
 //        textColor 16-bit color of the characters
 // bgColor is Black and size is 1
 // Output: number of characters printed
-uint32_t BSP_LCD_DrawString(uint16_t x, uint16_t y, char *pt, int16_t textColor);
+uint32_t BSP_LCD_DrawString(uint16_t x, uint16_t y, char *pt, int16_t textColor, int16_t bgcolor);
 
 
 //********BSP_LCD_SetCursor*****************
@@ -625,7 +625,7 @@ void BSP_LCD_PlotPoint(int32_t data1, uint16_t color1);
 // Input: none
 // Output: none
 // Assumes: BSP_LCD_Init() and BSP_LCD_Drawaxes() have been called
-void BSP_LCD_PlotIncrement(void);
+uint8_t BSP_LCD_PlotIncrement(void);
 
 
 // ------------BSP_Clock_InitFastest------------
@@ -820,7 +820,7 @@ void BSP_TempSensor_Start(void);
 // Assumes: BSP_TempSensor_Init() has been called
 int BSP_TempSensor_End(int32_t *sensorV, int32_t *localT);
 
-//Poloni (12/02/2019) - adaptação fa função BSP_LCD_DrawBitmap para trabalhar com 4 bits (1byte por pixel)
+//Poloni (12/02/2019) - adaptaï¿½ï¿½o fa funï¿½ï¿½o BSP_LCD_DrawBitmap para trabalhar com 4 bits (1byte por pixel)
 //------------BSP_LCD_DrawBitmap4bits------------
 // Displays a 4-bit color BMP image.  A bitmap file that is created
 // by a PC image processing program has a header and may be padded

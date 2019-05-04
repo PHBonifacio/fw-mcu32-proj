@@ -11,9 +11,9 @@
 /*
  *	Revisada: 03/03/2019
  *	Autor: Leandro Poloni Dantas
- *	Versão: 2.0
- *	Foi implementada um adaptação da função BSP_LCD_DrawBitmap para trabalhar com 4 bits (1byte por pixel)
- *	Foi implementada uma função para impressão de Bitmap no formato de 24 bits
+ *	Versï¿½o: 2.0
+ *	Foi implementada um adaptaï¿½ï¿½o da funï¿½ï¿½o BSP_LCD_DrawBitmap para trabalhar com 4 bits (1byte por pixel)
+ *	Foi implementada uma funï¿½ï¿½o para impressï¿½o de Bitmap no formato de 24 bits
  */
 
 /* This example accompanies the books
@@ -1688,11 +1688,12 @@ void BSP_LCD_DrawChar(int16_t x, int16_t y, char c, int16_t textColor, int16_t b
 //        textColor 16-bit color of the characters
 // bgColor is Black and size is 1
 // Output: number of characters printed
-uint32_t BSP_LCD_DrawString(uint16_t x, uint16_t y, char *pt, int16_t textColor){
+uint32_t BSP_LCD_DrawString(uint16_t x, uint16_t y, char *pt, int16_t textColor, int16_t bgcolor)
+{
   uint32_t count = 0;
   if(y>12) return 0;
   while(*pt){
-    BSP_LCD_DrawChar(x*6, y*10, *pt, textColor, ST7735_BLACK, 1);
+    BSP_LCD_DrawChar(x*6, y*10, *pt, textColor, bgcolor, 1);
     pt++;
     x = x+1;
     if(x>20) return count;  // number of characters printed
@@ -1830,7 +1831,7 @@ void BSP_LCD_OutUDec(uint32_t n, int16_t textColor){
   Messageindex = 0;
   fillmessage(n);
   Message[Messageindex] = 0; // terminate
-  BSP_LCD_DrawString(StX,StY,Message,textColor);
+  BSP_LCD_DrawString(StX,StY,Message,textColor, LCD_BLACK);
   StX = StX+Messageindex;
   if(StX>20){
     StX = 20;
@@ -1850,7 +1851,7 @@ void BSP_LCD_OutUDec4(uint32_t n, int16_t textColor){
   Messageindex = 0;
   fillmessage4(n);
   Message[Messageindex] = 0; // terminate
-  BSP_LCD_DrawString(StX,StY,Message,textColor);
+  BSP_LCD_DrawString(StX,StY,Message,textColor, LCD_BLACK);
   StX = StX+Messageindex;
   if(StX>20){
     StX = 20;
@@ -1870,7 +1871,7 @@ void BSP_LCD_OutUDec5(uint32_t n, int16_t textColor){
   Messageindex = 0;
   fillmessage5(n);
   Message[Messageindex] = 0; // terminate
-  BSP_LCD_DrawString(StX,StY,Message,textColor);
+  BSP_LCD_DrawString(StX,StY,Message,textColor, LCD_BLACK);
   StX = StX+Messageindex;
   if(StX>20){
     StX = 20;
@@ -1889,7 +1890,7 @@ void BSP_LCD_OutUDec5(uint32_t n, int16_t textColor){
 // Fixed format 4 characters with no space before or after
 void BSP_LCD_OutUFix2_1(uint32_t n, int16_t textColor){
   fillmessage2_1(n);
-  BSP_LCD_DrawString(StX,StY,Message,textColor);
+  BSP_LCD_DrawString(StX,StY,Message,textColor, LCD_BLACK);
   StX = StX+4;
   if(StX>20){
     StX = 20;
@@ -1906,7 +1907,7 @@ void BSP_LCD_OutUFix2_1(uint32_t n, int16_t textColor){
 // Fixed format 3 characters with comma after
 void BSP_LCD_OutUHex2(uint32_t n, int16_t textColor){
   fillmessage2_Hex(n);
-  BSP_LCD_DrawString(StX,StY,Message,textColor);
+  BSP_LCD_DrawString(StX,StY,Message,textColor, LCD_BLACK);
   StX = StX+3;
   if(StX>20){
     StX = 20;
@@ -2011,12 +2012,13 @@ void BSP_LCD_PlotPoint(int32_t data1, uint16_t color1){
 // Input: none
 // Output: none
 // Assumes: BSP_LCD_Init() and BSP_LCD_Drawaxes() have been called
-void BSP_LCD_PlotIncrement(void){
+uint8_t BSP_LCD_PlotIncrement(void){
   TimeIndex = TimeIndex + 1;
   if(TimeIndex > 99){
     TimeIndex = 0;
   }
   BSP_LCD_DrawFastVLine(TimeIndex + 11, 17, 100, PlotBGColor);
+  return (uint8_t)TimeIndex;
 }
 /* ********************** */
 /*   End of LCD Section   */
@@ -2744,7 +2746,7 @@ int BSP_TempSensor_End(int32_t *sensorV, int32_t *localT){
   }
 }
 
-//Leandro (12/02/2019) - adaptação fa função BSP_LCD_DrawBitmap para trabalhar com 4 bits (1 byte por pixel)
+//Leandro (12/02/2019) - adaptaï¿½ï¿½o fa funï¿½ï¿½o BSP_LCD_DrawBitmap para trabalhar com 4 bits (1 byte por pixel)
 //------------BSP_LCD_DrawBitmap4bits------------
 // Displays a 4-bit color BMP image.  A bitmap file that is created
 // by a PC image processing program has a header and may be padded
@@ -2838,7 +2840,7 @@ void BSP_LCD_DrawBitmap4Bits(int16_t x, int16_t y, const unsigned char *image, i
   }
 }
 
-//Leandro (03/03/2019) - função para impressão de Bitmap no formato 24 bits
+//Leandro (03/03/2019) - funï¿½ï¿½o para impressï¿½o de Bitmap no formato 24 bits
 // (x,y) is the screen location of the lower left corner of BMP image
 // Requires (11 + w*h) bytes of transmission (assuming image fully on screen)
 // Input: x     horizontal position of the bottom left corner of the image, columns from the left edge
