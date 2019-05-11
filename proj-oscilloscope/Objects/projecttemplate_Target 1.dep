@@ -1,5 +1,5 @@
 Dependencies for Project 'projecttemplate', Target 'Target 1': (DO NOT MODIFY !)
-F (.\main.c)(0x5CD7120F)(--c99 --gnu -c --cpu Cortex-M4.fp -D__EVAL -g -O0 --apcs=interwork --split_sections -I C:\ti\TivaWare_C_Series-2.1.4.178-I.\RTE\_Target_1-IC:\Users\pedro.bonifacio\AppData\Local\Arm\Packs\ARM\CMSIS\5.5.1\CMSIS\Core\Include-IC:\Users\pedro.bonifacio\AppData\Local\Arm\Packs\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123-D__UVISION_VERSION="527" -D_RTE_ -DTM4C123GH6PM -Drvmdk -DPART_TM4C123GH6PM -DTARGET_IS_TM4C123_RB1-o .\objects\main.o --omf_browse .\objects\main.crf --depend .\objects\main.d)
+F (.\main.c)(0x5CD727F7)(--c99 --gnu -c --cpu Cortex-M4.fp -D__EVAL -g -O0 --apcs=interwork --split_sections -I C:\ti\TivaWare_C_Series-2.1.4.178-I.\RTE\_Target_1-IC:\Users\pedro.bonifacio\AppData\Local\Arm\Packs\ARM\CMSIS\5.5.1\CMSIS\Core\Include-IC:\Users\pedro.bonifacio\AppData\Local\Arm\Packs\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123-D__UVISION_VERSION="527" -D_RTE_ -DTM4C123GH6PM -Drvmdk -DPART_TM4C123GH6PM -DTARGET_IS_TM4C123_RB1-o .\objects\main.o --omf_browse .\objects\main.crf --depend .\objects\main.d)
 I (C:\Users\pedro.bonifacio\AppData\Local\Arm\Packs\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123\TM4C123GH6PM.h)(0x5510287C)
 I (C:\Users\pedro.bonifacio\AppData\Local\Arm\Packs\ARM\CMSIS\5.5.1\CMSIS\Core\Include\core_cm4.h)(0x5C8FE884)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599F67DE)
@@ -8,17 +8,17 @@ I (C:\Users\pedro.bonifacio\AppData\Local\Arm\Packs\ARM\CMSIS\5.5.1\CMSIS\Core\I
 I (C:\Users\pedro.bonifacio\AppData\Local\Arm\Packs\ARM\CMSIS\5.5.1\CMSIS\Core\Include\cmsis_armcc.h)(0x5C8FE884)
 I (C:\Users\pedro.bonifacio\AppData\Local\Arm\Packs\ARM\CMSIS\5.5.1\CMSIS\Core\Include\mpu_armv7.h)(0x5C8FE884)
 I (C:\Users\pedro.bonifacio\AppData\Local\Arm\Packs\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123\system_TM4C123.h)(0x51B72A56)
-I (defines.h)(0x5CD6FDBD)
+I (defines.h)(0x5CD72736)
 I (BSP.h)(0x5CD7038E)
 I (tm4c123gh6pmX.h)(0x5CD6F318)
 I (functions.h)(0x5CD6F318)
 F (C:\ti\TivaWare_C_Series-2.1.4.178\driverlib\rvmdk\driverlib.lib)(0x5CD6FB4F)()
-F (.\BSP.c)(0x5CD71492)(--c99 --gnu -c --cpu Cortex-M4.fp -D__EVAL -g -O0 --apcs=interwork --split_sections -I C:\ti\TivaWare_C_Series-2.1.4.178-I.\RTE\_Target_1-IC:\Users\pedro.bonifacio\AppData\Local\Arm\Packs\ARM\CMSIS\5.5.1\CMSIS\Core\Include-IC:\Users\pedro.bonifacio\AppData\Local\Arm\Packs\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123-D__UVISION_VERSION="527" -D_RTE_ -DTM4C123GH6PM -Drvmdk -DPART_TM4C123GH6PM -DTARGET_IS_TM4C123_RB1-o .\objects\bsp.o --omf_browse .\objects\bsp.crf --depend .\objects\bsp.d)
+F (.\BSP.c)(0x5CD71754)(--c99 --gnu -c --cpu Cortex-M4.fp -D__EVAL -g -O0 --apcs=interwork --split_sections -I C:\ti\TivaWare_C_Series-2.1.4.178-I.\RTE\_Target_1-IC:\Users\pedro.bonifacio\AppData\Local\Arm\Packs\ARM\CMSIS\5.5.1\CMSIS\Core\Include-IC:\Users\pedro.bonifacio\AppData\Local\Arm\Packs\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123-D__UVISION_VERSION="527" -D_RTE_ -DTM4C123GH6PM -Drvmdk -DPART_TM4C123GH6PM -DTARGET_IS_TM4C123_RB1-o .\objects\bsp.o --omf_browse .\objects\bsp.crf --depend .\objects\bsp.d)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599F67DE)
 I (BSP.h)(0x5CD7038E)
 I (tm4c123gh6pmX.h)(0x5CD6F318)
 F (.\BSP.h)(0x5CD7038E)()
-F (.\defines.h)(0x5CD6FDBD)()
+F (.\defines.h)(0x5CD72736)()
 F (.\tm4c123gh6pmX.h)(0x5CD6F318)()
 F (.\functions.c)(0x5CD6F318)(--c99 --gnu -c --cpu Cortex-M4.fp -D__EVAL -g -O0 --apcs=interwork --split_sections -I C:\ti\TivaWare_C_Series-2.1.4.178-I.\RTE\_Target_1-IC:\Users\pedro.bonifacio\AppData\Local\Arm\Packs\ARM\CMSIS\5.5.1\CMSIS\Core\Include-IC:\Users\pedro.bonifacio\AppData\Local\Arm\Packs\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123-D__UVISION_VERSION="527" -D_RTE_ -DTM4C123GH6PM -Drvmdk -DPART_TM4C123GH6PM -DTARGET_IS_TM4C123_RB1-o .\objects\functions.o --omf_browse .\objects\functions.crf --depend .\objects\functions.d)
 I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x599F67DE)

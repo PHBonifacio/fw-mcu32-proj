@@ -38,4 +38,18 @@ typedef struct
     uint8_t nxt_point;
 } osc_t;
 
+typedef enum
+{
+    WAIT_SW1 = 0,
+    DEBOUNCE_SW1_0,
+    SELECT_FUNCTION,
+    DEBOUNCE_SW2,
+    SHOW_MENU_OPTION,
+    DEBOUNCE_MENU,
+    DEBOUNCE_SW1_1,
+    CHANGE_VOLT,
+    CHANGE_PERIOD,
+    CHANGE_TRIGGER
+} state_machine_t;
+
 #endif
