@@ -35,6 +35,7 @@ typedef struct
     uint16_t timer;
     uint16_t volt;
     uint8_t status;
+    uint8_t nxt_point;
 } osc_t;
 
 #endif

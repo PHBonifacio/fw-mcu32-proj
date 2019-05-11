@@ -4,17 +4,19 @@
             "name": "Win32",
             "includePath": [
                 "${workspaceFolder}/**",
-                "C:\\Keil_v5\\ARM\\PACK\\Keil\\TM4C_DFP\\1.1.0\\Device\\Include\\TM4C123",
-                "C:\\ti\\TivaWare_C_Series-2.1.4.178\\driverlib",
-                "C:\\Keil_v5\\ARM\\PACK\\ARM\\CMSIS\\5.4.0\\CMSIS\\Core\\Include",
-                "C:/ti/TivaWare_C_Series-2.1.4.178"
+                "C:/Keil_v5/ARM/PACK/Keil/TM4C_DFP/1.1.0/Device/Include/TM4C123",
+                "C:/ti/TivaWare_C_Series-2.1.4.178/driverlib",
+                "C:/Keil_v5/ARM/PACK/ARM/CMSIS/5.4.0/CMSIS/Core/Include",
+                "C:/ti/TivaWare_C_Series-2.1.4.178",
+                "C:/Users/pedro.bonifacio/AppData/Local/Arm/Packs/Keil/TM4C_DFP/1.1.0/Device/Include/TM4C123",
+                "C:/Users/pedro.bonifacio/AppData/Local/Arm/**",
+                "C:/Keil_v5/ARM/ARMCC/include/**" 
             ],
             "defines": [
                 "_DEBUG",
                 "UNICODE",
                 "_UNICODE"
             ],
-            "compilerPath": "C:\\MinGW\\bin\\gcc.exe",
             "cStandard": "c11",
             "cppStandard": "c++17",
             "intelliSenseMode": "clang-x64"

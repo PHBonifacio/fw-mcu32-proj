@@ -2,6 +2,7 @@
     "C_Cpp.intelliSenseEngineFallback": "Disabled",
     "files.associations": {
         "fpu.h": "c",
-        "tm4c123gh6pm.h": "c"
+        "tm4c123gh6pm.h": "c",
+        "stdint.h": "c"
     }
 }

@@ -616,7 +616,7 @@ void BSP_LCD_Drawaxes(uint16_t axisColor, uint16_t bgColor, char *xLabel,
 // Output: none
 // Assumes: BSP_LCD_Init() and BSP_LCD_Drawaxes() have been called
 void BSP_LCD_PlotPoint(int32_t data1, uint16_t color1);
-
+void BSP_LCD_Plot_VLine(int32_t oldpoint, int32_t newpoint, uint16_t color);
 
 // ------------BSP_LCD_PlotIncrement------------
 // Increment the plot between subsequent calls to

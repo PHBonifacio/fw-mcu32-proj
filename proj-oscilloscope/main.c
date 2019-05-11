@@ -13,7 +13,7 @@
 /*  INCLUDE BOARD INFO */
 #include <TM4C123GH6PM.h>
 /*  INCLUDE LIBRARIES */
-#include <stdint.h>
+#include <stdint.h> 
 #include "defines.h"
 #include "BSP.h"
 #include "tm4c123gh6pmX.h"
@@ -26,7 +26,7 @@ int main()
     joystick_read_t js_read = {0, 0, 0};
     read_t sw1_read = {1, 1};
     read_t sw2_read = {1, 1};
-    osc_t oscillocope = {256, 0, 0, 0};
+    osc_t oscillocope = {512, 0, 0, 0, 0};
     read_t adc_read = {0, 0};
     /*  INIT SYSTICK */
     SysTick_Config(SystemCoreClock / 1000);
@@ -68,12 +68,33 @@ int main()
 
         //BSP_LCD_PlotPoint(js_read.y, LCD_CYAN);
         adc_read.last_read = adc_read.new_read;
-        adc_read.new_read = getFunctionPoint(sinFunction, 0.20);
-        BSP_LCD_PlotPoint(value, LCD_CYAN);
-			
-        BSP_LCD_PlotPoint(oscillocope.trigger, LCD_Gray50);
+        adc_read.new_read = getFunctionPoint(sinFunction, 0.3);
 
-        BSP_LCD_PlotIncrement();
+        if ((0 != oscillocope.nxt_point) && (0 != oscillocope.status))
+        {
+            BSP_LCD_Plot_VLine(adc_read.last_read, adc_read.new_read, LCD_CYAN);
+
+            BSP_LCD_PlotPoint(oscillocope.trigger, LCD_Gray50);
+
+            oscillocope.nxt_point = BSP_LCD_PlotIncrement();
+
+            if (0 == oscillocope.nxt_point)
+            {
+                oscillocope.status = 0;
+            }
+        }
+        else if ((adc_read.last_read < oscillocope.trigger) && \
+            (oscillocope.trigger <= adc_read.new_read) && \
+            (0 == oscillocope.status))
+        {
+            oscillocope.status = 1;
+            BSP_LCD_PlotPoint(adc_read.new_read, LCD_CYAN); 
+
+            BSP_LCD_PlotPoint(oscillocope.trigger, LCD_Gray50);
+
+            oscillocope.nxt_point = BSP_LCD_PlotIncrement();
+        }
+       
         while (0 != (systick_counter % 100));
     }
 }

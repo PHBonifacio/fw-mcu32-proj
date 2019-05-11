@@ -2004,6 +2004,64 @@ void BSP_LCD_PlotPoint(int32_t data1, uint16_t color1){
   BSP_LCD_DrawPixel(TimeIndex + 11, 115 - data1, color1);
 }
 
+void BSP_LCD_Plot_VLine(int32_t oldpoint, int32_t newpoint, uint16_t color)
+{
+    oldpoint = ((oldpoint - Ymin)*100)/Yrange;
+    newpoint = ((newpoint - Ymin)*100)/Yrange;
+
+    if (newpoint > 98)
+    {
+        newpoint = 98;
+        color = LCD_RED;
+    }
+    if (newpoint < 0)
+    {
+        newpoint = 0;
+        color = LCD_RED;
+    }
+
+    uint8_t lines = 0;
+
+    if (newpoint > oldpoint)
+    {
+        lines = newpoint - oldpoint;
+        if (oldpoint > 0)
+        {
+            for (uint8_t i = 0, j = (lines / 2); i < ((lines / 2) + 1); i++, j++)
+            {
+                BSP_LCD_DrawPixel(TimeIndex + 10, (116 - newpoint - i), color);
+                BSP_LCD_DrawPixel(TimeIndex + 11, (116 - newpoint - j), color);
+            }
+        }
+        else
+        {
+            for (uint8_t i = 0; i <= lines; i++)
+            {
+                BSP_LCD_DrawPixel(TimeIndex + 11, (116 - newpoint - i), color);
+            }
+        }
+    }
+    else
+    {
+        lines = oldpoint - newpoint;
+        for (uint8_t i = 0, j = (lines / 2); i <= (lines / 2); i++, j++)
+        {
+            BSP_LCD_DrawPixel(TimeIndex + 11, (116 - newpoint - i), color);
+            BSP_LCD_DrawPixel(TimeIndex + 10, (116 - newpoint - j), color); 
+        }
+    }
+
+    if (lines < 2)
+    {
+        for (uint8_t i = 0; i < lines; i++)
+        {
+            BSP_LCD_DrawPixel(TimeIndex + 10 + i, 116 - newpoint, color);
+        }
+    }
+
+
+    
+}
 
 // ------------BSP_LCD_PlotIncrement------------
 // Increment the plot between subsequent calls to
