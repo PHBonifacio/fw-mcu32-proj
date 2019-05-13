@@ -14,7 +14,7 @@
 #endif
 
 #define DEBUG                   1
-#define DEBUG_SHOW_READ_VALUE   1
+#define DEBUG_SHOW_READ_VALUE   0
 #define DEBUG_LED               0
 typedef struct 
 {
@@ -41,15 +41,29 @@ typedef struct
 typedef enum
 {
     WAIT_SW1 = 0,
-    DEBOUNCE_SW1_0,
+    DEBOUNCE_SW1,
     SELECT_FUNCTION,
     DEBOUNCE_SW2,
     SHOW_MENU_OPTION,
     DEBOUNCE_MENU,
-    DEBOUNCE_SW1_1,
+    SELECTED_FUNCTION,
     CHANGE_VOLT,
     CHANGE_PERIOD,
-    CHANGE_TRIGGER
-} state_machine_t;
+    CHANGE_TRIGGER,
+    RETURN_DEFAULT
+} status_sm_t;
 
+typedef enum
+{
+    POS_VOLT = 0,
+    POS_PERIOD,
+    POS_TRIG,
+    PRINT_INFO
+} pos_menu_t;
+
+typedef struct
+{
+    status_sm_t last_state;
+    status_sm_t curr_state;
+} state_machine_t;
 #endif

@@ -2004,7 +2004,7 @@ void BSP_LCD_PlotPoint(int32_t data1, uint16_t color1){
   BSP_LCD_DrawPixel(TimeIndex + 11, 115 - data1, color1);
 }
 
-void BSP_LCD_Plot_VLine(int32_t oldpoint, int32_t newpoint, uint16_t color)
+void ♠BSP_LCD_Plot_VLine(int32_t oldpoint, int32_t newpoint, uint16_t color)
 {
     oldpoint = ((oldpoint - Ymin)*100)/Yrange;
     newpoint = ((newpoint - Ymin)*100)/Yrange;
@@ -2037,7 +2037,7 @@ void BSP_LCD_Plot_VLine(int32_t oldpoint, int32_t newpoint, uint16_t color)
         {
             for (uint8_t i = 0; i <= lines; i++)
             {
-                BSP_LCD_DrawPixel(TimeIndex + 11, (116 - newpoint - i), color);
+                BSP_LCD_DrawPixel(TimeIndex + 11, (116 - i), color);
             }
         }
     }
@@ -2050,16 +2050,6 @@ void BSP_LCD_Plot_VLine(int32_t oldpoint, int32_t newpoint, uint16_t color)
             BSP_LCD_DrawPixel(TimeIndex + 10, (116 - newpoint - j), color); 
         }
     }
-
-    if (lines < 2)
-    {
-        for (uint8_t i = 0; i < lines; i++)
-        {
-            BSP_LCD_DrawPixel(TimeIndex + 10 + i, 116 - newpoint, color);
-        }
-    }
-
-
     
 }
 
