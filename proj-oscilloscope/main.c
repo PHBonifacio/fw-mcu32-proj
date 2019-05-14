@@ -375,6 +375,28 @@ int main()
             break;
 
             case CHANGE_PERIOD:
+                if ((300 > js_read.x) && \
+                    (TIME_2_SECONDS > (systick_counter - timer)))
+                {
+                    if (--config_pos == PRINT_INFO)
+                    {
+                        config_pos = CONFIG_3;
+                    }
+                    sm.last_state = sm.curr_state;
+                    sm.curr_state = SHOW_PERIOD_OPTION;
+                    timer = systick_counter;
+                }
+                else if ((700 < js_read.x) && \
+                    (TIME_2_SECONDS > (systick_counter - timer)))
+                {
+                    if (++config_pos == CONFIG_4)
+                    {
+                        config_pos = CONFIG_0;
+                    }
+                    sm.last_state = sm.curr_state;
+                    sm.curr_state = SHOW_PERIOD_OPTION;
+                    timer = systick_counter;
+                }
                 if ((0 != sw2_read.last_read) && (0 == sw2_read.new_read))
                 {
                     sm.last_state = sm.curr_state;
@@ -387,6 +409,28 @@ int main()
             break;
 
             case CHANGE_TRIGGER:
+                if ((300 > js_read.x) && \
+                    (TIME_2_SECONDS > (systick_counter - timer)))
+                {
+                    if (--config_pos == PRINT_INFO)
+                    {
+                        config_pos = CONFIG_3;
+                    }
+                    sm.last_state = sm.curr_state;
+                    sm.curr_state = SHOW_TRIGGER_OPTION;
+                    timer = systick_counter;
+                }
+                else if ((700 < js_read.x) && \
+                    (TIME_2_SECONDS > (systick_counter - timer)))
+                {
+                    if (++config_pos == CONFIG_4)
+                    {
+                        config_pos = CONFIG_0;
+                    }
+                    sm.last_state = sm.curr_state;
+                    sm.curr_state = SHOW_TRIGGER_OPTION;
+                    timer = systick_counter;
+                }   
                 if ((0 != sw2_read.last_read) && (0 == sw2_read.new_read))
                 {
                     sm.last_state = sm.curr_state;
@@ -402,31 +446,47 @@ int main()
                 switch (config_pos)
                 {
                     case PRINT_INFO:
-                        BSP_LCD_DrawString(1, 1, "10mV  0.1V  1V", LCD_YELLOW, \
+                        BSP_LCD_DrawString(1, 1, "10mV  0.1V  0.5V 1V", LCD_YELLOW, \
                             LCD_BLACK);
                         config_pos = CONFIG_0;
                     break;
 
                     case CONFIG_0:
-                        BSP_LCD_DrawString(1, 0, ">", LCD_RED, LCD_BLACK);
+                        BSP_LCD_DrawString(0, 1, ">", LCD_RED, LCD_BLACK);
+                        BSP_LCD_DrawString(6, 1, " ", LCD_RED, LCD_BLACK);
+                        BSP_LCD_DrawString(12, 1, " ", LCD_RED, LCD_BLACK);
+                        BSP_LCD_DrawString(17, 1, " ", LCD_RED, LCD_BLACK);
+                        oscillocope.volt = 10;
                         sm.last_state = sm.curr_state;
                         sm.curr_state = DEBOUNCE_MENU;
                     break;
 
                     case CONFIG_1:
-                        BSP_LCD_DrawString(1, 6, ">", LCD_RED, LCD_BLACK);
+                        BSP_LCD_DrawString(0, 1, " ", LCD_RED, LCD_BLACK);
+                        BSP_LCD_DrawString(6, 1, ">", LCD_RED, LCD_BLACK);
+                        BSP_LCD_DrawString(12, 1, " ", LCD_RED, LCD_BLACK);
+                        BSP_LCD_DrawString(17, 1, " ", LCD_RED, LCD_BLACK);
+                        oscillocope.volt = 100;
                         sm.last_state = sm.curr_state;
                         sm.curr_state = DEBOUNCE_MENU;
                     break;
 
                     case CONFIG_2:
-                        BSP_LCD_DrawString(1, 12, ">", LCD_RED, LCD_BLACK);
+                        BSP_LCD_DrawString(0, 1, " ", LCD_RED, LCD_BLACK);
+                        BSP_LCD_DrawString(6, 1, " ", LCD_RED, LCD_BLACK);
+                        BSP_LCD_DrawString(12, 1, ">", LCD_RED, LCD_BLACK);
+                        BSP_LCD_DrawString(17, 1, " ", LCD_RED, LCD_BLACK);
+                        oscillocope.volt = 500;
                         sm.last_state = sm.curr_state;
                         sm.curr_state = DEBOUNCE_MENU;
                     break;
 
                     case CONFIG_3:
-                        BSP_LCD_DrawString(1, 0, ">", LCD_RED, LCD_BLACK);
+                        BSP_LCD_DrawString(0, 1, " ", LCD_RED, LCD_BLACK);
+                        BSP_LCD_DrawString(6, 1, " ", LCD_RED, LCD_BLACK);
+                        BSP_LCD_DrawString(12, 1, " ", LCD_RED, LCD_BLACK);
+                        BSP_LCD_DrawString(17, 1, ">", LCD_RED, LCD_BLACK);
+                        oscillocope.volt = 1000;
                         sm.last_state = sm.curr_state;
                         sm.curr_state = DEBOUNCE_MENU;
                     break;
@@ -444,21 +504,50 @@ int main()
                 switch (config_pos)
                 {
                     case PRINT_INFO:
-                        BSP_LCD_DrawString(1, 1, "10ms  0.1S  0.5S  1S", \
-                            LCD_YELLOW, LCD_BLACK);
-                        config_pos = CONFIG_1;
+                        BSP_LCD_DrawString(1, 1, "10ms  0.1s  0.5s 1s", LCD_YELLOW, \
+                            LCD_BLACK);
+                        config_pos = CONFIG_0;
+                    break;
+
+                    case CONFIG_0:
+                        BSP_LCD_DrawString(0, 1, ">", LCD_RED, LCD_BLACK);
+                        BSP_LCD_DrawString(6, 1, " ", LCD_RED, LCD_BLACK);
+                        BSP_LCD_DrawString(12, 1, " ", LCD_RED, LCD_BLACK);
+                        BSP_LCD_DrawString(17, 1, " ", LCD_RED, LCD_BLACK);
+                        oscillocope.timer = 10;
+                        sm.last_state = sm.curr_state;
+                        sm.curr_state = DEBOUNCE_MENU;
                     break;
 
                     case CONFIG_1:
+                        BSP_LCD_DrawString(0, 1, " ", LCD_RED, LCD_BLACK);
+                        BSP_LCD_DrawString(6, 1, ">", LCD_RED, LCD_BLACK);
+                        BSP_LCD_DrawString(12, 1, " ", LCD_RED, LCD_BLACK);
+                        BSP_LCD_DrawString(17, 1, " ", LCD_RED, LCD_BLACK);
+                        oscillocope.timer = 100;
+                        sm.last_state = sm.curr_state;
+                        sm.curr_state = DEBOUNCE_MENU;
                     break;
 
                     case CONFIG_2:
+                        BSP_LCD_DrawString(0, 1, " ", LCD_RED, LCD_BLACK);
+                        BSP_LCD_DrawString(6, 1, " ", LCD_RED, LCD_BLACK);
+                        BSP_LCD_DrawString(12, 1, ">", LCD_RED, LCD_BLACK);
+                        BSP_LCD_DrawString(17, 1, " ", LCD_RED, LCD_BLACK);
+                        oscillocope.timer = 500;
+                        sm.last_state = sm.curr_state;
+                        sm.curr_state = DEBOUNCE_MENU;
                     break;
 
                     case CONFIG_3:
+                        BSP_LCD_DrawString(0, 1, " ", LCD_RED, LCD_BLACK);
+                        BSP_LCD_DrawString(6, 1, " ", LCD_RED, LCD_BLACK);
+                        BSP_LCD_DrawString(12, 1, " ", LCD_RED, LCD_BLACK);
+                        BSP_LCD_DrawString(17, 1, ">", LCD_RED, LCD_BLACK);
+                        oscillocope.timer = 1000;
+                        sm.last_state = sm.curr_state;
+                        sm.curr_state = DEBOUNCE_MENU;
                     break;
-
-                    case CONFIG_4:
                 
                     default:
                         BSP_LCD_DrawString(1, 0, "                    ", \
@@ -473,21 +562,50 @@ int main()
                 switch (config_pos)
                 {
                     case PRINT_INFO:
-                        BSP_LCD_DrawString(1, 1, "10mV  0.1V  1V", LCD_YELLOW, \
+                        BSP_LCD_DrawString(1, 1, "10mV  0.1V  0.5V 1V", LCD_YELLOW, \
                             LCD_BLACK);
-                        config_pos = CONFIG_1;
+                        config_pos = CONFIG_0;
+                    break;
+
+                    case CONFIG_0:
+                        BSP_LCD_DrawString(0, 1, ">", LCD_RED, LCD_BLACK);
+                        BSP_LCD_DrawString(6, 1, " ", LCD_RED, LCD_BLACK);
+                        BSP_LCD_DrawString(12, 1, " ", LCD_RED, LCD_BLACK);
+                        BSP_LCD_DrawString(17, 1, " ", LCD_RED, LCD_BLACK);
+                        oscillocope.volt = 10;
+                        sm.last_state = sm.curr_state;
+                        sm.curr_state = DEBOUNCE_MENU;
                     break;
 
                     case CONFIG_1:
+                        BSP_LCD_DrawString(0, 1, " ", LCD_RED, LCD_BLACK);
+                        BSP_LCD_DrawString(6, 1, ">", LCD_RED, LCD_BLACK);
+                        BSP_LCD_DrawString(12, 1, " ", LCD_RED, LCD_BLACK);
+                        BSP_LCD_DrawString(17, 1, " ", LCD_RED, LCD_BLACK);
+                        oscillocope.volt = 100;
+                        sm.last_state = sm.curr_state;
+                        sm.curr_state = DEBOUNCE_MENU;
                     break;
 
                     case CONFIG_2:
+                        BSP_LCD_DrawString(0, 1, " ", LCD_RED, LCD_BLACK);
+                        BSP_LCD_DrawString(6, 1, " ", LCD_RED, LCD_BLACK);
+                        BSP_LCD_DrawString(12, 1, ">", LCD_RED, LCD_BLACK);
+                        BSP_LCD_DrawString(17, 1, " ", LCD_RED, LCD_BLACK);
+                        oscillocope.volt = 500;
+                        sm.last_state = sm.curr_state;
+                        sm.curr_state = DEBOUNCE_MENU;
                     break;
 
                     case CONFIG_3:
+                        BSP_LCD_DrawString(0, 1, " ", LCD_RED, LCD_BLACK);
+                        BSP_LCD_DrawString(6, 1, " ", LCD_RED, LCD_BLACK);
+                        BSP_LCD_DrawString(12, 1, " ", LCD_RED, LCD_BLACK);
+                        BSP_LCD_DrawString(17, 1, ">", LCD_RED, LCD_BLACK);
+                        oscillocope.volt = 1000;
+                        sm.last_state = sm.curr_state;
+                        sm.curr_state = DEBOUNCE_MENU;
                     break;
-
-                    case CONFIG_4:
                 
                     default:
                         BSP_LCD_DrawString(1, 0, "                    ", \
@@ -500,6 +618,8 @@ int main()
 
             case RETURN_DEFAULT:
                 BSP_LCD_DrawString(0, 0, "                     ", LCD_YELLOW, \
+                    LCD_BLACK);
+                BSP_LCD_DrawString(0, 1, "                     ", LCD_YELLOW, \
                     LCD_BLACK);
                 timer = 0;
                 sm.last_state = WAIT_SW1;
