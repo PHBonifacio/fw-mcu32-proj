@@ -1695,7 +1695,7 @@ uint32_t BSP_LCD_DrawString(uint16_t x, uint16_t y, char *pt, int16_t textColor,
   while(*pt){
     BSP_LCD_DrawChar(x*6, y*10, *pt, textColor, bgcolor, 1);
     pt++;
-    x = x+1;
+    x++;
     if(x>20) return count;  // number of characters printed
     count++;
   }
@@ -2004,7 +2004,7 @@ void BSP_LCD_PlotPoint(int32_t data1, uint16_t color1){
   BSP_LCD_DrawPixel(TimeIndex + 11, 115 - data1, color1);
 }
 
-void ♠BSP_LCD_Plot_VLine(int32_t oldpoint, int32_t newpoint, uint16_t color)
+void BSP_LCD_Plot_VLine(int32_t oldpoint, int32_t newpoint, uint16_t color)
 {
     oldpoint = ((oldpoint - Ymin)*100)/Yrange;
     newpoint = ((newpoint - Ymin)*100)/Yrange;

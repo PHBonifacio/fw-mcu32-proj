@@ -36,7 +36,7 @@ int main()
     };
 
     /*  INIT SYSTICK */
-    SysTick_Config(SystemCoreClock / 1000);
+    SysTick_Config(SystemCoreClock / TICK);
     /*  INIT LEDS */
     #if DEBUG && DEBUG_LED
         BSP_RGB_D_Init(0X01, 0X01, 0X01);
@@ -84,6 +84,7 @@ int main()
         {
             static uint32_t timer = 0;
             static pos_menu_t menu_pos = PRINT_INFO;
+            static pos_menu_t config_pos = PRINT_INFO;
 
             /*  ESPERA ATÉ O SW1 SER PRESSIONADO PARA ENTRAR NO MENU */
             case WAIT_SW1:
@@ -131,9 +132,10 @@ int main()
             /*  UTILIZA O EIXO X DO JOYSTICK PARA SELECIONAR A FUNÇÃO QUE SERÁ 
                 CONFIGURADA PELO MENU */
             case SELECT_FUNCTION:
-                if ((300 > js_read.x) && (1000 > (systick_counter - timer)))
+                if ((300 > js_read.x) && \
+                    (TIME_2_SECONDS > (systick_counter - timer)))
                 {
-                    if (--menu_pos == 0xFF)
+                    if (--menu_pos == ERROR)
                     {
                         menu_pos = POS_TRIG;
                     }
@@ -141,9 +143,10 @@ int main()
                     sm.curr_state = SHOW_MENU_OPTION;
                     timer = systick_counter;
                 }
-                else if ((700 < js_read.x) && (1000 > (systick_counter - timer)))
+                else if ((700 < js_read.x) && \
+                    (TIME_2_SECONDS > (systick_counter - timer)))
                 {
-                    if (++menu_pos == 3)
+                    if (++menu_pos == PRINT_INFO)
                     {
                         menu_pos = POS_VOLT;
                     }
@@ -161,7 +164,7 @@ int main()
                     sm.last_state = sm.curr_state;
                     sm.curr_state = DEBOUNCE_SW2;
                 }
-                else if (1000 < (systick_counter - timer))
+                else if (TIME_2_SECONDS < (systick_counter - timer))
                 {
                     sm.curr_state = RETURN_DEFAULT;
                 }
@@ -231,11 +234,7 @@ int main()
                     break;
 
                     case PRINT_INFO:
-                        BSP_LCD_DrawString(1, 0, "VOLT", LCD_YELLOW, \
-                            LCD_BLACK);
-                        BSP_LCD_DrawString(7, 0, "PERIOD", LCD_YELLOW, \
-                            LCD_BLACK);
-                        BSP_LCD_DrawString(15, 0, "TRIG", LCD_YELLOW, \
+                        BSP_LCD_DrawString(1, 0, "VOLT  PERIOD  TRIG", LCD_YELLOW, \
                             LCD_BLACK);
                         menu_pos = POS_VOLT;
                     break;
@@ -260,21 +259,40 @@ int main()
                             switch (menu_pos)
                             {
                                 case POS_VOLT:
-                                    sm.curr_state = CHANGE_VOLT;
+                                    sm.curr_state = SHOW_VOLT_OPTION;
+                                    config_pos = PRINT_INFO;
                                 break;
 
                                 case POS_PERIOD:
-                                    sm.curr_state = CHANGE_PERIOD;
+                                    sm.curr_state = SHOW_PERIOD_OPTION;
+                                    config_pos = PRINT_INFO;
                                 break;
 
                                 case POS_TRIG:
-                                    sm.curr_state = CHANGE_TRIGGER;
+                                    sm.curr_state = SHOW_TRIGGER_OPTION;
+                                    config_pos = PRINT_INFO;
                                 break;
 
                                 default:
                                     sm.curr_state = RETURN_DEFAULT;
+                                    config_pos = PRINT_INFO;
                                 break;
                             }
+                        break;
+
+                        case SHOW_PERIOD_OPTION:
+                            sm.curr_state = CHANGE_PERIOD;
+                            timer = systick_counter;
+                        break;
+
+                        case SHOW_VOLT_OPTION:
+                            sm.curr_state = CHANGE_VOLT;
+                            timer = systick_counter;
+                        break;
+
+                        case SHOW_TRIGGER_OPTION:
+                            sm.curr_state = CHANGE_TRIGGER;
+                            timer = systick_counter;
                         break;
 
                         default:
@@ -318,12 +336,39 @@ int main()
             break;
 
             case CHANGE_VOLT:
+                if ((300 > js_read.x) && \
+                    (TIME_2_SECONDS > (systick_counter - timer)))
+                {
+                    if (--config_pos == PRINT_INFO)
+                    {
+                        config_pos = CONFIG_3;
+                    }
+                    sm.last_state = sm.curr_state;
+                    sm.curr_state = SHOW_VOLT_OPTION;
+                    timer = systick_counter;
+                }
+                else if ((700 < js_read.x) && \
+                    (TIME_2_SECONDS > (systick_counter - timer)))
+                {
+                    if (++config_pos == CONFIG_4)
+                    {
+                        config_pos = CONFIG_0;
+                    }
+                    sm.last_state = sm.curr_state;
+                    sm.curr_state = SHOW_VOLT_OPTION;
+                    timer = systick_counter;
+                }
+                else if ((0 != sw1_read.last_read) && (0 == sw1_read.new_read))
+                {
+                    sm.last_state = sm.curr_state;
+                    sm.curr_state = DEBOUNCE_SW1;
+                }
                 if ((0 != sw2_read.last_read) && (0 == sw2_read.new_read))
                 {
                     sm.last_state = sm.curr_state;
                     sm.curr_state = DEBOUNCE_SW2;
                 }
-                else if (1000 < (systick_counter - timer))
+                else if (TIME_2_SECONDS < (systick_counter - timer))
                 {
                     sm.curr_state = RETURN_DEFAULT;
                 }
@@ -335,7 +380,7 @@ int main()
                     sm.last_state = sm.curr_state;
                     sm.curr_state = DEBOUNCE_SW2;
                 }
-                else if (1000 < (systick_counter - timer))
+                else if (TIME_2_SECONDS < (systick_counter - timer))
                 {
                     sm.curr_state = RETURN_DEFAULT;
                 }
@@ -347,9 +392,109 @@ int main()
                     sm.last_state = sm.curr_state;
                     sm.curr_state = DEBOUNCE_SW2;
                 }
-                else if (1000 < (systick_counter - timer))
+                else if (TIME_2_SECONDS < (systick_counter - timer))
                 {
                     sm.curr_state = RETURN_DEFAULT;
+                }
+            break;
+
+            case SHOW_VOLT_OPTION:
+                switch (config_pos)
+                {
+                    case PRINT_INFO:
+                        BSP_LCD_DrawString(1, 1, "10mV  0.1V  1V", LCD_YELLOW, \
+                            LCD_BLACK);
+                        config_pos = CONFIG_0;
+                    break;
+
+                    case CONFIG_0:
+                        BSP_LCD_DrawString(1, 0, ">", LCD_RED, LCD_BLACK);
+                        sm.last_state = sm.curr_state;
+                        sm.curr_state = DEBOUNCE_MENU;
+                    break;
+
+                    case CONFIG_1:
+                        BSP_LCD_DrawString(1, 6, ">", LCD_RED, LCD_BLACK);
+                        sm.last_state = sm.curr_state;
+                        sm.curr_state = DEBOUNCE_MENU;
+                    break;
+
+                    case CONFIG_2:
+                        BSP_LCD_DrawString(1, 12, ">", LCD_RED, LCD_BLACK);
+                        sm.last_state = sm.curr_state;
+                        sm.curr_state = DEBOUNCE_MENU;
+                    break;
+
+                    case CONFIG_3:
+                        BSP_LCD_DrawString(1, 0, ">", LCD_RED, LCD_BLACK);
+                        sm.last_state = sm.curr_state;
+                        sm.curr_state = DEBOUNCE_MENU;
+                    break;
+                
+                    default:
+                        BSP_LCD_DrawString(1, 0, "                    ", \
+                            LCD_YELLOW, LCD_BLACK);
+                        sm.curr_state = SHOW_MENU_OPTION;
+                        menu_pos = PRINT_INFO;
+                    break;
+                }
+            break;
+
+            case SHOW_PERIOD_OPTION:
+                switch (config_pos)
+                {
+                    case PRINT_INFO:
+                        BSP_LCD_DrawString(1, 1, "10ms  0.1S  0.5S  1S", \
+                            LCD_YELLOW, LCD_BLACK);
+                        config_pos = CONFIG_1;
+                    break;
+
+                    case CONFIG_1:
+                    break;
+
+                    case CONFIG_2:
+                    break;
+
+                    case CONFIG_3:
+                    break;
+
+                    case CONFIG_4:
+                
+                    default:
+                        BSP_LCD_DrawString(1, 0, "                    ", \
+                            LCD_YELLOW, LCD_BLACK);
+                        sm.curr_state = SHOW_MENU_OPTION;
+                        menu_pos = PRINT_INFO;
+                    break;
+                }
+            break;
+
+            case SHOW_TRIGGER_OPTION:
+                switch (config_pos)
+                {
+                    case PRINT_INFO:
+                        BSP_LCD_DrawString(1, 1, "10mV  0.1V  1V", LCD_YELLOW, \
+                            LCD_BLACK);
+                        config_pos = CONFIG_1;
+                    break;
+
+                    case CONFIG_1:
+                    break;
+
+                    case CONFIG_2:
+                    break;
+
+                    case CONFIG_3:
+                    break;
+
+                    case CONFIG_4:
+                
+                    default:
+                        BSP_LCD_DrawString(1, 0, "                    ", \
+                            LCD_YELLOW, LCD_BLACK);
+                        sm.curr_state = SHOW_MENU_OPTION;
+                        menu_pos = PRINT_INFO;
+                    break;
                 }
             break;
 
@@ -366,7 +511,7 @@ int main()
         {
             adc_read.last_read = adc_read.new_read;
             adc_read.new_read = getFunctionPoint(sinFunction, \
-                0.3); 
+                0.1); 
 
             if ((0 != oscillocope.nxt_point) && (0 != oscillocope.status))
             {

@@ -16,6 +16,11 @@
 #define DEBUG                   1
 #define DEBUG_SHOW_READ_VALUE   0
 #define DEBUG_LED               0
+
+#define TICK                    1000UL
+#define TIME_1_MSEC             (SystemCoreClock / TICK)
+#define TIME_1_SECOND           (1000 * TIME_1_MSEC)
+#define TIME_2_SECONDS          (2 * TIME_1_SECOND)
 typedef struct 
 {
     uint16_t x;
@@ -50,6 +55,9 @@ typedef enum
     CHANGE_VOLT,
     CHANGE_PERIOD,
     CHANGE_TRIGGER,
+    SHOW_VOLT_OPTION,
+    SHOW_PERIOD_OPTION,
+    SHOW_TRIGGER_OPTION,
     RETURN_DEFAULT
 } status_sm_t;
 
@@ -58,7 +66,13 @@ typedef enum
     POS_VOLT = 0,
     POS_PERIOD,
     POS_TRIG,
-    PRINT_INFO
+    PRINT_INFO,
+    CONFIG_0,
+    CONFIG_1,
+    CONFIG_2,
+    CONFIG_3,
+    CONFIG_4,
+    ERROR = 0xFF
 } pos_menu_t;
 
 typedef struct

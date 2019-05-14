@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\Objects\projecttemplate.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Objects\projecttemplate.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Sun May 12 23:03:31 2019
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Mon May 13 23:47:53 2019
 <BR><P>
 <H3>Maximum Stack Usage =        240 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -1432,7 +1432,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[a7]"></a>BSP_LCD_Plot_VLine</STRONG> (Thumb, 328 bytes, Stack size 32 bytes, bsp.o(i.BSP_LCD_Plot_VLine))
+<P><STRONG><a name="[a7]"></a>BSP_LCD_Plot_VLine</STRONG> (Thumb, 290 bytes, Stack size 32 bytes, bsp.o(i.BSP_LCD_Plot_VLine))
 <BR><BR>[Stack]<UL><LI>Max Depth = 80<LI>Call Chain = BSP_LCD_Plot_VLine &rArr; BSP_LCD_DrawPixel &rArr; setAddrWindow
 </UL>
 <BR>[Calls]<UL><LI><a href="#[9e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BSP_LCD_DrawPixel
@@ -1558,7 +1558,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[89]"></a>main</STRONG> (Thumb, 1762 bytes, Stack size 56 bytes, main.o(i.main))
+<P><STRONG><a name="[89]"></a>main</STRONG> (Thumb, 2602 bytes, Stack size 56 bytes, main.o(i.main))
 <BR><BR>[Stack]<UL><LI>Max Depth = 184<LI>Call Chain = main &rArr; BSP_LCD_Drawaxes &rArr; BSP_LCD_DrawChar &rArr; setAddrWindow
 </UL>
 <BR>[Calls]<UL><LI><a href="#[c4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;getFunctionPoint
@@ -1582,12 +1582,12 @@ Global Symbols
 <P><STRONG><a name="[7a]"></a>sinFunction</STRONG> (Thumb, 104 bytes, Stack size 56 bytes, functions.o(i.sinFunction))
 <BR><BR>[Stack]<UL><LI>Max Depth = 240<LI>Call Chain = sinFunction &rArr; __hardfp_sin &rArr; __ieee754_rem_pio2 &rArr; __aeabi_dsub
 </UL>
-<BR>[Calls]<UL><LI><a href="#[be]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_ddiv
-<LI><a href="#[b4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dadd
+<BR>[Calls]<UL><LI><a href="#[b4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dadd
 <LI><a href="#[ac]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_sin
 <LI><a href="#[c5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2d
 <LI><a href="#[b6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dmul
 <LI><a href="#[c6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_d2uiz
+<LI><a href="#[be]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_ddiv
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> main.o(i.main)
 </UL>
