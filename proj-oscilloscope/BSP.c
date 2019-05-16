@@ -2012,12 +2012,12 @@ void BSP_LCD_Plot_VLine(int32_t oldpoint, int32_t newpoint, uint16_t color)
     if (newpoint > 98)
     {
         newpoint = 98;
-        color = LCD_RED;
+        /* color = LCD_RED; */
     }
     if (newpoint < 0)
     {
         newpoint = 0;
-        color = LCD_RED;
+        /* color = LCD_RED; */
     }
 
     uint8_t lines = 0;
@@ -2027,27 +2027,32 @@ void BSP_LCD_Plot_VLine(int32_t oldpoint, int32_t newpoint, uint16_t color)
         lines = newpoint - oldpoint;
         if (oldpoint > 0)
         {
-            for (uint8_t i = 0, j = (lines / 2); i < ((lines / 2) + 1); i++, j++)
+            for (uint8_t j = 0; j <= lines;j++)
             {
-                BSP_LCD_DrawPixel(TimeIndex + 10, (116 - newpoint - i), color);
-                BSP_LCD_DrawPixel(TimeIndex + 11, (116 - newpoint - j), color);
+                BSP_LCD_DrawPixel(TimeIndex + 11, (116 - oldpoint - j), color);
             }
         }
         else
         {
-            for (uint8_t i = 0; i <= lines; i++)
+            for (uint8_t j = 0; j <= lines;j++)
             {
-                BSP_LCD_DrawPixel(TimeIndex + 11, (116 - i), color);
+                BSP_LCD_DrawPixel(TimeIndex + 11, (115 - oldpoint - j), color);
             }
         }
     }
     else
     {
         lines = oldpoint - newpoint;
-        for (uint8_t i = 0, j = (lines / 2); i <= (lines / 2); i++, j++)
+        if (0 != lines)
         {
-            BSP_LCD_DrawPixel(TimeIndex + 11, (116 - newpoint - i), color);
-            BSP_LCD_DrawPixel(TimeIndex + 10, (116 - newpoint - j), color); 
+            for (uint8_t j = 0; j < lines;j++)
+            {
+                BSP_LCD_DrawPixel(TimeIndex + 11, (116 - newpoint - j), color);
+            }
+        }
+        else
+        {
+            BSP_LCD_DrawPixel(TimeIndex + 11, (116 - newpoint), color);
         }
     }
     

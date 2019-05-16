@@ -18,7 +18,7 @@
 #define DEBUG_LED               0
 
 #define TICK                    1000UL
-#define TIME_1_MSEC             (SystemCoreClock / TICK)
+#define TIME_1_MSEC             1UL
 #define TIME_1_SECOND           (1000 * TIME_1_MSEC)
 #define TIME_2_SECONDS          (2 * TIME_1_SECOND)
 typedef struct 

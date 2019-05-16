@@ -26,7 +26,7 @@ int main()
     joystick_read_t js_read = {0, 0, 0};
     read_t sw1_read = {1, 1};
     read_t sw2_read = {1, 1};
-    osc_t oscillocope = {512, 1000, 0, 0, 0};
+    osc_t oscillocope = {500, 10, 1000, 0, 0};
     read_t adc_read = {0, 0};
 
     state_machine_t sm =
@@ -45,11 +45,12 @@ int main()
     BSP_Joystick_Init();
     BSP_Button1_Init();
     BSP_Button2_Init();
+    BSP_Buzzer_Init(0);
 
     BSP_LCD_Init();
     BSP_LCD_FillScreen(LCD_BLACK);
 
-    BSP_LCD_Drawaxes(LCD_WHITE, LCD_BLACK, "5ms/d", "1V/d", LCD_Green, 0,
+    BSP_LCD_Drawaxes(LCD_WHITE, LCD_BLACK, "Time", "Amp", LCD_Green, 0,
                      LCD_BLACK, 1023, 0);
     #if DEBUG && DEBUG_SHOW_READ_VALUE
         BSP_LCD_DrawString(0, 1, "X=    ", LCD_YELLOW, LCD_BLACK);
@@ -85,6 +86,8 @@ int main()
             static uint32_t timer = 0;
             static pos_menu_t menu_pos = PRINT_INFO;
             static pos_menu_t config_pos = PRINT_INFO;
+            static uint16_t old_trigger_value = 0;
+            static uint16_t trigger_value = 0;
 
             /*  ESPERA ATÉ O SW1 SER PRESSIONADO PARA ENTRAR NO MENU */
             case WAIT_SW1:
@@ -115,6 +118,7 @@ int main()
                             break;
 
                             default:
+                                sm.curr_state = RETURN_DEFAULT;
                             break;
                         }
                         timer = systick_counter;
@@ -183,6 +187,8 @@ int main()
                             case CHANGE_PERIOD:
                             case CHANGE_VOLT:
                             case CHANGE_TRIGGER:
+                                BSP_LCD_DrawString(0, 1, "                     ", \
+                                    LCD_YELLOW, LCD_BLACK);
                                 sm.curr_state = SHOW_MENU_OPTION;
                                 menu_pos = PRINT_INFO;
                             break;
@@ -322,6 +328,15 @@ int main()
 
                     case 2:
                         BSP_LCD_DrawString(15, 0, "TRIG", LCD_BLACK, LCD_RED);
+                        if (0xFFFF != oscillocope.trigger)
+                        {
+                            trigger_value = oscillocope.trigger;
+                        }
+                        else
+                        {
+                            trigger_value = 500;
+                        }
+                        
                         sm.last_state = sm.curr_state;
                         sm.curr_state = DEBOUNCE_MENU;
                         timer = systick_counter;
@@ -397,6 +412,11 @@ int main()
                     sm.curr_state = SHOW_PERIOD_OPTION;
                     timer = systick_counter;
                 }
+                else if ((0 != sw1_read.last_read) && (0 == sw1_read.new_read))
+                {
+                    sm.last_state = sm.curr_state;
+                    sm.curr_state = DEBOUNCE_SW1;
+                }
                 if ((0 != sw2_read.last_read) && (0 == sw2_read.new_read))
                 {
                     sm.last_state = sm.curr_state;
@@ -414,7 +434,7 @@ int main()
                 {
                     if (--config_pos == PRINT_INFO)
                     {
-                        config_pos = CONFIG_3;
+                        config_pos = CONFIG_1;
                     }
                     sm.last_state = sm.curr_state;
                     sm.curr_state = SHOW_TRIGGER_OPTION;
@@ -423,7 +443,7 @@ int main()
                 else if ((700 < js_read.x) && \
                     (TIME_2_SECONDS > (systick_counter - timer)))
                 {
-                    if (++config_pos == CONFIG_4)
+                    if (++config_pos == CONFIG_2)
                     {
                         config_pos = CONFIG_0;
                     }
@@ -431,6 +451,37 @@ int main()
                     sm.curr_state = SHOW_TRIGGER_OPTION;
                     timer = systick_counter;
                 }   
+                else if ((700 < js_read.y) && \
+                    (TIME_2_SECONDS > (systick_counter - timer)))
+                {
+                    if (trigger_value < 1020)
+                    {
+                        old_trigger_value = trigger_value;
+                        trigger_value += 10;
+                    }
+                    sm.last_state = sm.curr_state;
+                    sm.curr_state = SHOW_TRIGGER_OPTION;
+                    timer = systick_counter - 200;
+
+                }
+                else if (((300 > js_read.y)) && \
+                    (TIME_2_SECONDS > (systick_counter - timer)))
+                {
+                    if (trigger_value >= 10)
+                    {
+                        old_trigger_value = trigger_value;
+                        trigger_value -= 10;
+                    }
+                    sm.last_state = sm.curr_state;
+                    sm.curr_state = SHOW_TRIGGER_OPTION;
+                    timer = systick_counter - 200;
+
+                }
+                else if ((0 != sw1_read.last_read) && (0 == sw1_read.new_read))
+                {
+                    sm.last_state = sm.curr_state;
+                    sm.curr_state = DEBOUNCE_SW1;
+                }
                 if ((0 != sw2_read.last_read) && (0 == sw2_read.new_read))
                 {
                     sm.last_state = sm.curr_state;
@@ -562,47 +613,31 @@ int main()
                 switch (config_pos)
                 {
                     case PRINT_INFO:
-                        BSP_LCD_DrawString(1, 1, "10mV  0.1V  0.5V 1V", LCD_YELLOW, \
+                        BSP_LCD_DrawString(0, 1, "     ON        OFF", LCD_YELLOW, \
                             LCD_BLACK);
                         config_pos = CONFIG_0;
                     break;
 
                     case CONFIG_0:
-                        BSP_LCD_DrawString(0, 1, ">", LCD_RED, LCD_BLACK);
-                        BSP_LCD_DrawString(6, 1, " ", LCD_RED, LCD_BLACK);
-                        BSP_LCD_DrawString(12, 1, " ", LCD_RED, LCD_BLACK);
-                        BSP_LCD_DrawString(17, 1, " ", LCD_RED, LCD_BLACK);
-                        oscillocope.volt = 10;
+                        BSP_LCD_DrawString(4, 1, ">", LCD_RED, LCD_BLACK);
+                        BSP_LCD_DrawString(14, 1, " ", LCD_RED, LCD_BLACK);
+                        BSP_LCD_Plot_VLine(old_trigger_value - 1, old_trigger_value, LCD_BLACK);
+                        BSP_LCD_Plot_VLine(trigger_value - 1, trigger_value, LCD_RED);
+ 
                         sm.last_state = sm.curr_state;
-                        sm.curr_state = DEBOUNCE_MENU;
+
+                        if (BSP_LCD_PlotIncrement() == oscillocope.nxt_point)
+                        {
+                            sm.curr_state = CHANGE_TRIGGER;
+                            timer = systick_counter;
+                            oscillocope.trigger = trigger_value;
+                        }
                     break;
 
                     case CONFIG_1:
-                        BSP_LCD_DrawString(0, 1, " ", LCD_RED, LCD_BLACK);
-                        BSP_LCD_DrawString(6, 1, ">", LCD_RED, LCD_BLACK);
-                        BSP_LCD_DrawString(12, 1, " ", LCD_RED, LCD_BLACK);
-                        BSP_LCD_DrawString(17, 1, " ", LCD_RED, LCD_BLACK);
-                        oscillocope.volt = 100;
-                        sm.last_state = sm.curr_state;
-                        sm.curr_state = DEBOUNCE_MENU;
-                    break;
-
-                    case CONFIG_2:
-                        BSP_LCD_DrawString(0, 1, " ", LCD_RED, LCD_BLACK);
-                        BSP_LCD_DrawString(6, 1, " ", LCD_RED, LCD_BLACK);
-                        BSP_LCD_DrawString(12, 1, ">", LCD_RED, LCD_BLACK);
-                        BSP_LCD_DrawString(17, 1, " ", LCD_RED, LCD_BLACK);
-                        oscillocope.volt = 500;
-                        sm.last_state = sm.curr_state;
-                        sm.curr_state = DEBOUNCE_MENU;
-                    break;
-
-                    case CONFIG_3:
-                        BSP_LCD_DrawString(0, 1, " ", LCD_RED, LCD_BLACK);
-                        BSP_LCD_DrawString(6, 1, " ", LCD_RED, LCD_BLACK);
-                        BSP_LCD_DrawString(12, 1, " ", LCD_RED, LCD_BLACK);
-                        BSP_LCD_DrawString(17, 1, ">", LCD_RED, LCD_BLACK);
-                        oscillocope.volt = 1000;
+                        BSP_LCD_DrawString(4, 1, " ", LCD_RED, LCD_BLACK);
+                        BSP_LCD_DrawString(14, 1, ">", LCD_RED, LCD_BLACK);
+                        oscillocope.trigger = 0xFFFF;
                         sm.last_state = sm.curr_state;
                         sm.curr_state = DEBOUNCE_MENU;
                     break;
@@ -627,19 +662,25 @@ int main()
             break;
         }
 
-        if (0 == (systick_counter % (oscillocope.timer / 10)))
+        if ((0 == (systick_counter % (oscillocope.timer / 10)) && \
+            (SHOW_TRIGGER_OPTION != sm.curr_state) && \
+            (SHOW_TRIGGER_OPTION != sm.last_state)))
         {
             adc_read.last_read = adc_read.new_read;
-            adc_read.new_read = getFunctionPoint(sinFunction, \
-                0.1); 
+            adc_read.new_read = getFunctionPoint(squareFunction, \
+                ((0.1 * 500) / oscillocope.timer)); 
+            /* adc_read.new_read = js_read.y; */
 
             if ((0 != oscillocope.nxt_point) && (0 != oscillocope.status))
             {
                 BSP_LCD_Plot_VLine(adc_read.last_read, adc_read.new_read, LCD_CYAN);
 
-                BSP_LCD_Plot_VLine(oscillocope.trigger - 1, oscillocope.trigger, \
-                    LCD_Gray25);
-
+                if (0xFFFF != oscillocope.trigger)
+                {
+                    BSP_LCD_Plot_VLine(oscillocope.trigger - 1, oscillocope.trigger, \
+                        LCD_Gray25);
+                }
+                
                 if (0 == (oscillocope.nxt_point % 10))
                 {
                     for (uint16_t i = 1; i <= 10; i ++)
@@ -655,14 +696,17 @@ int main()
                     oscillocope.status = 0;
                 }
             }
-            else if ((adc_read.last_read < oscillocope.trigger) && \
-                (oscillocope.trigger <= adc_read.new_read) && \
-                (0 == oscillocope.status))
+            else if ((((adc_read.last_read < oscillocope.trigger) && \
+                (oscillocope.trigger <= adc_read.new_read)) \
+                || (0xFFFF == oscillocope.trigger)) && (0 == oscillocope.status))
             {
                 oscillocope.status = 1;
                 BSP_LCD_PlotPoint(adc_read.new_read, LCD_CYAN); 
 
-                BSP_LCD_PlotPoint(oscillocope.trigger, LCD_Gray50);
+                if (0xFFFF != oscillocope.trigger)
+                {
+                    BSP_LCD_PlotPoint(oscillocope.trigger, LCD_Gray25);
+                }
 
                 oscillocope.nxt_point = BSP_LCD_PlotIncrement();
             }
