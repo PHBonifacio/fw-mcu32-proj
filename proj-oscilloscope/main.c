@@ -667,18 +667,19 @@ int main()
             (SHOW_TRIGGER_OPTION != sm.last_state)))
         {
             adc_read.last_read = adc_read.new_read;
-            adc_read.new_read = getFunctionPoint(squareFunction, \
+            adc_read.new_read = getFunctionPoint(sinFunction, \
                 ((0.1 * 500) / oscillocope.timer)); 
             /* adc_read.new_read = js_read.y; */
 
             if ((0 != oscillocope.nxt_point) && (0 != oscillocope.status))
             {
                 BSP_LCD_Plot_VLine(adc_read.last_read, adc_read.new_read, LCD_CYAN);
+                BSP_LCD_Plot_VLine(511, 512, LCD_RED);
 
                 if (0xFFFF != oscillocope.trigger)
                 {
                     BSP_LCD_Plot_VLine(oscillocope.trigger - 1, oscillocope.trigger, \
-                        LCD_Gray25);
+                        LCD_LIGHTGREEN);
                 }
                 
                 if (0 == (oscillocope.nxt_point % 10))
@@ -702,10 +703,11 @@ int main()
             {
                 oscillocope.status = 1;
                 BSP_LCD_PlotPoint(adc_read.new_read, LCD_CYAN); 
-
+                BSP_LCD_Plot_VLine(511, 512, LCD_RED);
+                
                 if (0xFFFF != oscillocope.trigger)
                 {
-                    BSP_LCD_PlotPoint(oscillocope.trigger, LCD_Gray25);
+                    BSP_LCD_PlotPoint(oscillocope.trigger, LCD_LIGHTGREEN);
                 }
 
                 oscillocope.nxt_point = BSP_LCD_PlotIncrement();
